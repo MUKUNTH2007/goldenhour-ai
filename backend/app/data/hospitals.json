@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Apollo Hospital",
+    "distance": "2.5 km",
+    "beds": 12
+  },
+  {
+    "id": 2,
+    "name": "Government Medical College Hospital",
+    "distance": "5 km",
+    "beds": 25
+  },
+  {
+    "id": 3,
+    "name": "Kauvery Hospital",
+    "distance": "7 km",
+    "beds": 8
+  }
+]

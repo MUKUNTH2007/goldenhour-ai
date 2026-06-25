@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Mukunthan",
+        "location": "Coimbatore",
+        "description": "Bike accident near signal"
+    },
+    {
+        "name": "Reporter",
+        "location": "Coimbatore",
+        "description": "\nVehicle Type: Car\nInjured Count: \n\n\n        "
+    },
+    {
+        "name": "Reporter",
+        "location": "Coimbatore",
+        "description": "\nVehicle Type: Car\nInjured Count: 3\n\nMinor accident near the traffic signal\n        "
+    },
+    {
+        "name": "Reporter",
+        "location": "Coimbatore",
+        "description": "\nVehicle Type: Car\nInjured Count: 2\n\nnear koch\n        "
+    }
+]

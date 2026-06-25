@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routes.hospital_routes import router as hospital_router
+from app.routes.accident_routes import router as accident_router
+
 app = FastAPI()
 
 app.add_middleware(
@@ -10,6 +13,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(hospital_router)
+app.include_router(accident_router)
 
 @app.get("/")
 def home():
