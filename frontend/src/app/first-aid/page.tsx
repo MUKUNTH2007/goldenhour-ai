@@ -1,4 +1,30 @@
+"use client"
+import {useState} from "react"
 export default function FirstAidPage() {
+
+  const [description, setDescription] = useState("");
+const [advice, setAdvice] = useState<string[]>([]);
+
+const getFirstAidAdvice = async () => {
+  const response = await fetch(
+    "http://localhost:8000/first-aid",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        description: description,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  console.log(data);
+
+  setAdvice(data.advice);
+};
   return (
     <main className="min-h-screen bg-gray-100 py-10 px-6">
 
@@ -31,31 +57,40 @@ export default function FirstAidPage() {
           </div>
 
           {/* AI Response */}
-          <div className="mb-6">
-            <div className="bg-blue-100 p-4 rounded-lg max-w-xl">
-              <p>
-                Apply direct pressure using a clean cloth.
-                Elevate the injured arm if possible and
-                seek medical assistance immediately.
-              </p>
-            </div>
-          </div>
+          {advice.length > 0 && (
+  <div className="mb-6">
+    <div className="bg-blue-100 p-4 rounded-lg max-w-xl">
+
+      <p className="font-semibold mb-2">
+        AI First Aid Advice:
+      </p>
+
+      <ul className="list-disc pl-5 space-y-2">
+
+        {advice.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+
+      </ul>
+
+    </div>
+  </div>
+)}
 
           {/* Input Area */}
           <div className="flex gap-4 mt-8">
 
-            <input
-              type="text"
-              placeholder="Describe the emergency..."
-              className="flex-1 border rounded-lg p-3"
-            />
-
+           <input
+  type="text"
+  placeholder="Describe the emergency..."
+  value={description}
+  onChange={(e) => setDescription(e.target.value)}
+  className="flex-1 border rounded-lg p-3"
+/>
             <button
-              className="bg-blue-900 text-white px-6 py-3 rounded-lg"
-            >
-              Send
-            </button>
-
+  onClick={getFirstAidAdvice}
+  className="bg-blue-900 text-white px-6 py-3 rounded-lg"
+></button>
           </div>
 
         </div>

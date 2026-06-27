@@ -1,24 +1,40 @@
+"use client";
+import {useEffect , useState} from "react";
 export default function HospitalsPage() {
-  const hospitals = [
-    {
-      name: "City Trauma Center",
-      distance: "2.5 km",
-      icu: "Available",
-      trauma: "Yes",
-    },
-    {
-      name: "Apollo Emergency Hospital",
-      distance: "4.2 km",
-      icu: "Available",
-      trauma: "Yes",
-    },
-    {
-      name: "Government Medical College",
-      distance: "6.1 km",
-      icu: "Limited",
-      trauma: "Yes",
-    },
-  ];
+
+  type Hospital = {
+  id: number;
+  name: string;
+  distance: string;
+  beds: number;
+}; 
+
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
+const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+  fetchHospitals();
+}, []);
+
+const fetchHospitals = async () => {
+  const response = await fetch(
+    "http://localhost:8000/hospitals"
+  );
+
+  const data = await response.json();
+
+  console.log(data);
+
+  setHospitals(data);
+  setLoading(false);
+};
+if (loading) {
+  return (
+    <main className="p-10">
+      <h1>Loading hospitals...</h1>
+    </main>
+  );
+}
 
   return (
     <main className="min-h-screen bg-gray-50 py-10 px-6">
@@ -48,14 +64,9 @@ export default function HospitalsPage() {
                 </div>
 
                 <div>
-                  <p className="font-medium">ICU Status</p>
-                  <p>{hospital.icu}</p>
-                </div>
-
-                <div>
-                  <p className="font-medium">Trauma Center</p>
-                  <p>{hospital.trauma}</p>
-                </div>
+  <p className="font-medium">Available Beds</p>
+  <p>{hospital.beds}</p>
+</div>
 
               </div>
 
