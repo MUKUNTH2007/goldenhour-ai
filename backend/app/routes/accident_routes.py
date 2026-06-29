@@ -1,33 +1,32 @@
-from fastapi import APIRouter
-from app.schemas.first_aid import FirstAidRequest
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+from app.schemas.accident import AccidentCreate
+from app.models.accident import Accident
 
 router = APIRouter()
 
 
-@router.post("/first-aid")
-def get_first_aid(data: FirstAidRequest):
+@router.post("/accidents")
+def create_accident(
+    data: AccidentCreate,
+    db: Session = Depends(get_db)
+):
 
-    description = data.description.lower()
+    accident = Accident(
+        victim_name=data.name,
+        location=data.location,
+        injury_description=data.description,
+        severity="Pending"
+    )
 
-    advice = [
-        "Call emergency services immediately."
-    ]
-
-    if "unconscious" in description:
-        advice.append(
-            "Check breathing and place victim in recovery position."
-        )
-
-    if "bleeding" in description:
-        advice.append(
-            "Apply direct pressure to the wound."
-        )
-
-    if "fracture" in description:
-        advice.append(
-            "Immobilize the injured limb."
-        )
+    db.add(accident)
+    db.commit()
+    db.refresh(accident)
 
     return {
-        "advice": advice
+        "success": True,
+        "accident_id": accident.id,
+        "message": "Accident report saved"
     }
