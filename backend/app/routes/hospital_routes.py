@@ -1,12 +1,25 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 
 from app.database import get_db
 from app.models.hospital import Hospital
+from app.services.recommendation_service import get_recommended_hospitals
 
 router = APIRouter()
 
 
+# -----------------------------
+# Request Schema (GLOBAL)
+# -----------------------------
+class AccidentLocation(BaseModel):
+    latitude: float
+    longitude: float
+
+
+# -----------------------------
+# GET ALL HOSPITALS (RAW DATA)
+# -----------------------------
 @router.get("/hospitals")
 def get_hospitals(db: Session = Depends(get_db)):
 
@@ -27,3 +40,25 @@ def get_hospitals(db: Session = Depends(get_db)):
         })
 
     return result
+
+
+# -----------------------------
+# RECOMMENDATION ENGINE API
+# -----------------------------
+@router.post("/hospitals/recommend")
+def recommend_hospitals(
+    location: AccidentLocation,
+    db: Session = Depends(get_db)
+):
+
+    results = get_recommended_hospitals(
+        db=db,
+        accident_lat=location.latitude,
+        accident_lon=location.longitude
+    )
+
+    return {
+        "success": True,
+        "total_hospitals": len(results),
+        "data": results
+    }
