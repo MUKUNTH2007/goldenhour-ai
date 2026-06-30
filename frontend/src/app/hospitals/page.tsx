@@ -5,9 +5,12 @@ export default function HospitalsPage() {
   type Hospital = {
   id: number;
   name: string;
-  distance: string;
-  beds: number;
-}; 
+  available_beds: number;
+  address: string;
+  phone: string;
+  latitude: number;
+  longitude: number;
+};
 
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
 const [loading, setLoading] = useState(true);
@@ -60,12 +63,12 @@ if (loading) {
 
                 <div>
                   <p className="font-medium">Distance</p>
-                  <p>{hospital.distance}</p>
+                  <p>Distance calculation coming soon</p>
                 </div>
 
                 <div>
   <p className="font-medium">Available Beds</p>
-  <p>{hospital.beds}</p>
+  <p>{hospital.available_beds}</p>
 </div>
 
               </div>
