@@ -7,8 +7,11 @@ from app.models.accident import Accident
 
 from app.services.severity_service import predict_severity
 from app.services.prediction_service import create_prediction
-from app.services.alert_service import create_alert 
+from app.services.alert_service import create_alert
 
+from app.services.emergency_response_service import (
+    route_emergency
+)
 router = APIRouter()
 
 
@@ -53,23 +56,33 @@ def create_accident(
     db.commit()
 
     alert_created = False
+    recommended_hospital = None
 
     if prediction_result["severity"] in [
         "HIGH",
         "CRITICAL"
     ]:
 
-        create_alert(
+        recommended_hospital = route_emergency(
             db=db,
-            accident_id=accident.id,
-            hospital_id=1
+            accident_lat=13.0827,
+            accident_lon=80.2707
         )
 
-        alert_created = True
+        if recommended_hospital:
 
-        print(
-            "[WARNING] Emergency alert generated"
-        )
+            create_alert(
+                db=db,
+                accident_id=accident.id,
+                hospital_id=recommended_hospital["id"]
+            )
+
+            alert_created = True
+
+            print(
+                f"[WARNING] Alert routed to "
+                f"{recommended_hospital['name']}"
+            )
 
     return {
         "success": True,
@@ -77,5 +90,6 @@ def create_accident(
         "severity": prediction.predicted_severity,
         "score": prediction.confidence_score,
         "alert_created": alert_created,
+        "recommended_hospital": recommended_hospital,
         "message": "Accident processed successfully"
     }
