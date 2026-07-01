@@ -42,11 +42,11 @@ setInjuredCount("");
 setDescription("");
 };
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-6">
+    <main className="min-h-screen bg-gray-50 py-10 px-6 text-black">
 
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8">
 
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-3xl font-bold mb-8 text-black">
           Report Accident
         </h1>
         {message && (
@@ -59,7 +59,7 @@ setDescription("");
 
           {/* Location */}
           <div>
-            <label className="block font-medium mb-2">
+            <label className="block font-medium mb-2 text-black">
               Accident Location
             </label>
 
@@ -74,7 +74,7 @@ setDescription("");
 
           {/* Vehicle Type */}
           <div>
-            <label className="block font-medium mb-2">
+            <label className="block font-medium mb-2 text-black">
               Vehicle Type
             </label>
 
@@ -87,7 +87,7 @@ setDescription("");
 
           {/* Injured Count */}
           <div>
-            <label className="block font-medium mb-2">
+            <label className="block font-medium mb-2 text-black">
               Number of Injured
             </label>
 
@@ -102,7 +102,7 @@ setDescription("");
 
           {/* Description */}
           <div>
-            <label className="block font-medium mb-2">
+            <label className="block font-medium mb-2 text-black">
               Accident Description
             </label>
 
@@ -117,13 +117,13 @@ setDescription("");
 
           {/* Image Upload */}
           <div>
-            <label className="block font-medium mb-2">
+            <label className="block font-medium mb-2 text-black">
               Upload Image
             </label>
 
             <input
               type="file"
-              className="w-full border rounded-lg p-3"
+              className="w-full border rounded-lg p-3 text-black"
             />
           </div>
 

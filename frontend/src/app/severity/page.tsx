@@ -32,11 +32,11 @@ const analyzeSeverity = async () => {
   setSeverity(data.severity);
 };
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-6">
+    <main className="min-h-screen bg-gray-50 py-10 px-6 text-black">
 
       <div className="max-w-4xl mx-auto">
 
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-3xl font-bold mb-8 text-black">
           AI Severity Analysis
         </h1>
         <div className="bg-white shadow-md rounded-xl p-6 mb-8">
@@ -82,11 +82,11 @@ const analyzeSeverity = async () => {
         {severity && (
   <div className="bg-red-100 border-l-8 border-red-600 p-6 rounded-xl mb-8">
 
-    <h2 className="text-2xl font-bold text-red-700">
+    <h2 className="text-2xl font-bold text-red-700 text-black">
       {severity} Severity Accident
     </h2>
 
-    <p className="mt-3 text-gray-700">
+    <p className="mt-3 text-gray-700 text-black">
       {severity === "High"
         ? "Immediate medical attention required."
         : "Monitor patient and seek medical evaluation."}
@@ -98,11 +98,11 @@ const analyzeSeverity = async () => {
         {/* Recommended Actions */}
         <div className="bg-white shadow-md rounded-xl p-6">
 
-          <h3 className="text-xl font-semibold mb-4">
+          <h3 className="text-xl font-semibold mb-4 text-black">
             Recommended Actions
           </h3>
 
-          <ul className="list-disc pl-6 space-y-2">
+          <ul className="list-disc pl-6 space-y-2 text-black">
 
             <li>Call emergency services immediately.</li>
 

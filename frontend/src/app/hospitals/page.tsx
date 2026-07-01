@@ -85,13 +85,13 @@ const fetchHospitals = async (lat: number, lon: number) => {
   if (loading) {
   return (
     <main className="p-10">
-      <h1>📍 Detecting location and finding nearest hospitals...</h1>
+      <h1 className = "text-black">📍 Detecting location and finding nearest hospitals...</h1>
     </main>
   );
 }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-6">
+    <main className="min-h-screen bg-gray-50 py-10 px-6 text-black">
 
       <div className="max-w-5xl mx-auto">
 
@@ -113,7 +113,7 @@ const fetchHospitals = async (lat: number, lon: number) => {
 
               {/* Header */}
               <div className="flex items-center mb-4">
-                <h2 className="text-2xl font-semibold">
+                <h2 className="text-2xl font-semibold text-black">
                   {hospital.name}
                 </h2>
 

@@ -26,11 +26,11 @@ const getFirstAidAdvice = async () => {
   setAdvice(data.advice);
 };
   return (
-    <main className="min-h-screen bg-gray-100 py-10 px-6">
+    <main className="min-h-screen bg-gray-100 py-10 px-6 text-black">
 
       <div className="max-w-4xl mx-auto">
 
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-3xl font-bold mb-8 text-black">
           AI First Aid Assistant
         </h1>
 
@@ -40,7 +40,7 @@ const getFirstAidAdvice = async () => {
           {/* AI Message */}
           <div className="mb-6">
             <div className="bg-blue-100 p-4 rounded-lg max-w-xl">
-              <p>
+              <p className="text-black">
                 Hello! Describe the accident and I will
                 provide first aid guidance.
               </p>
@@ -50,7 +50,7 @@ const getFirstAidAdvice = async () => {
           {/* User Message */}
           <div className="flex justify-end mb-6">
             <div className="bg-green-100 p-4 rounded-lg max-w-xl">
-              <p>
+              <p className="text-black">
                 The victim has bleeding from the arm.
               </p>
             </div>
@@ -61,7 +61,7 @@ const getFirstAidAdvice = async () => {
   <div className="mb-6">
     <div className="bg-blue-100 p-4 rounded-lg max-w-xl">
 
-      <p className="font-semibold mb-2">
+      <p className="font-semibold mb-2 text-black">
         AI First Aid Advice:
       </p>
 
@@ -78,7 +78,7 @@ const getFirstAidAdvice = async () => {
 )}
 
           {/* Input Area */}
-          <div className="flex gap-4 mt-8">
+          <div className="flex gap-4 mt-8 text-black">
 
            <input
   type="text"
