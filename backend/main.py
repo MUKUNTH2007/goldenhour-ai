@@ -5,6 +5,7 @@ from app.routes.hospital_routes import router as hospital_router
 from app.routes.accident_routes import router as accident_router
 from app.routes.severity_routes import router as severity_router
 from app.routes.first_aid_routes import router as first_aid_router
+from app.routes.analytics_routes import router as alnalytics_router
 
 app = FastAPI()
 
@@ -19,6 +20,7 @@ app.include_router(hospital_router)
 app.include_router(accident_router)
 app.include_router(severity_router)
 app.include_router(first_aid_router)
+app.include_router(alnalytics_router)
 
 @app.get("/")
 def home():
