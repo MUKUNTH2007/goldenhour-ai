@@ -25,8 +25,8 @@ def get_hospital_usage(db: Session = Depends(get_db)):
 def get_alert_analytics(db: Session = Depends(get_db)):
     return AnalyticsService.get_alert_analytics(db)
 
-@router.get("/analytics/alerts")
-def get_alert_analytics(
+@router.get("/analytics/recent-activity")
+def get_recent_activity(
     db: Session = Depends(get_db)
 ):
-    return AnalyticsService.get_alert_analytics(db)
+    return AnalyticsService.get_recent_activity(db)

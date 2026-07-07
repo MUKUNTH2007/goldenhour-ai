@@ -22,6 +22,7 @@ app.include_router(severity_router)
 app.include_router(first_aid_router)
 app.include_router(alnalytics_router)
 
+
 @app.get("/")
 def home():
     return {

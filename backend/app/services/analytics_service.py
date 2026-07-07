@@ -151,3 +151,45 @@ class AnalyticsService:
             "critical_alerts": critical_alerts,
             "high_alerts": high_alerts
         }
+    @staticmethod
+    def get_recent_activity(db: Session):
+
+        activity = (
+            db.query(
+                Accident.id,
+                Prediction.predicted_severity,
+                Hospital.name,
+                Alert.status,
+                Accident.reported_at
+        )
+            .join(
+                Prediction,
+                Accident.id == Prediction.accident_id
+        )
+            .join(
+                Alert,
+                Accident.id == Alert.accident_id
+        )
+            .join(
+                Hospital,
+                Alert.hospital_id == Hospital.id
+        )
+            .order_by(
+                Accident.reported_at.desc()
+        )
+            .limit(10)
+            .all()
+    )
+
+        result = []
+
+        for accident_id, severity, hospital_name, alert_status, created_at in activity:
+            result.append({
+            "accident_id": accident_id,
+            "severity": severity,
+            "hospital_name": hospital_name,
+            "alert_status": alert_status,
+            "timestamp": created_at
+        })
+
+        return result
