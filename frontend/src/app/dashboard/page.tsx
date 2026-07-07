@@ -79,6 +79,30 @@ console.log("Recent Activity:", activityData);
 useEffect(() => {
   fetchDashboardData();
 }, []);
+if (loading) {
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-xl font-semibold text-gray-600">
+        Loading Government Dashboard...
+      </div>
+    </main>
+  );
+}
+if (error) {
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-red-100 border border-red-300 rounded-lg p-6">
+        <h2 className="text-xl font-bold text-red-700">
+          Dashboard Error
+        </h2>
+
+        <p className="mt-2 text-red-600">
+          {error}
+        </p>
+      </div>
+    </main>
+  );
+}
   return (
     
     <main className="min-h-screen bg-gray-50 py-10 px-6 text-black">
@@ -136,30 +160,143 @@ useEffect(() => {
 
 </div>
         {/* Chart Placeholder */}
-        <div className="bg-white rounded-xl shadow-md p-6 mb-10">
+        {/* Severity Distribution */}
+<div className="mb-10">
+  <h2 className="text-2xl font-semibold mb-4">
+    Severity Distribution
+  </h2>
 
-          <h2 className="text-2xl font-semibold mb-4 text-black">
-            Accident Trends
-          </h2>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-            Chart Placeholder
-          </div>
+    <div className="bg-green-100 rounded-xl p-6 shadow">
+      <p className="text-green-700 font-semibold">LOW</p>
+      <p className="text-3xl font-bold">
+        {severityDistribution.LOW}
+      </p>
+    </div>
 
-        </div>
+    <div className="bg-yellow-100 rounded-xl p-6 shadow">
+      <p className="text-yellow-700 font-semibold">MEDIUM</p>
+      <p className="text-3xl font-bold">
+        {severityDistribution.MEDIUM}
+      </p>
+    </div>
 
-        {/* Heatmap Placeholder */}
-        <div className="bg-white rounded-xl shadow-md p-6">
+    <div className="bg-orange-100 rounded-xl p-6 shadow">
+      <p className="text-orange-700 font-semibold">HIGH</p>
+      <p className="text-3xl font-bold">
+        {severityDistribution.HIGH}
+      </p>
+    </div>
 
-          <h2 className="text-2xl font-semibold mb-4 text-black">
-            Accident Heatmap
-          </h2>
+    <div className="bg-red-100 rounded-xl p-6 shadow">
+      <p className="text-red-700 font-semibold">CRITICAL</p>
+      <p className="text-3xl font-bold">
+        {severityDistribution.CRITICAL}
+      </p>
+    </div>
 
-          <div className="h-80 bg-gray-100 rounded-lg flex items-center justify-center">
-            Heatmap Placeholder
-          </div>
+  </div>
+</div>
+{/* Hospital Usage */}
+<div className="bg-white rounded-xl shadow-md p-6 mb-10">
 
-        </div>
+  <h2 className="text-2xl font-semibold mb-4">
+    Hospital Usage
+  </h2>
+
+  {hospitalUsage.length === 0 ? (
+    <p className="text-gray-500">
+      No hospital usage data available.
+    </p>
+  ) : (
+    <table className="w-full border-collapse">
+
+      <thead>
+        <tr className="border-b">
+          <th className="text-left py-3">Hospital</th>
+          <th className="text-left py-3">Emergency Alerts Sent</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {hospitalUsage.map((hospital, index) => (
+          <tr
+            key={index}
+            className="border-b hover:bg-gray-50"
+          >
+            <td className="py-3">
+              {hospital.hospital_name}
+            </td>
+
+            <td className="py-3">
+              {hospital.total_alerts}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+
+    </table>
+  )}
+
+</div>
+{/* Recent Accident Activity */}
+<div className="bg-white rounded-xl shadow-md p-6 mb-10">
+
+  <h2 className="text-2xl font-semibold mb-4">
+    Recent Accident Activity
+  </h2>
+
+  {recentActivity.length === 0 ? (
+    <p className="text-gray-500">
+      No recent accident activity available.
+    </p>
+  ) : (
+    <table className="w-full border-collapse">
+
+      <thead>
+        <tr className="border-b">
+          <th className="text-left py-3">Accident ID</th>
+          <th className="text-left py-3">Severity</th>
+          <th className="text-left py-3">Hospital</th>
+          <th className="text-left py-3">Alert Status</th>
+          <th className="text-left py-3">Reported At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {recentActivity.map((activity, index) => (
+          <tr
+            key={index}
+            className="border-b hover:bg-gray-50"
+          >
+            <td className="py-3">
+              {activity.accident_id}
+            </td>
+
+            <td className="py-3 font-semibold">
+              {activity.severity}
+            </td>
+
+            <td className="py-3">
+              {activity.hospital_name}
+            </td>
+
+            <td className="py-3">
+              {activity.alert_status}
+            </td>
+
+            <td className="py-3">
+              {new Date(activity.timestamp).toLocaleString()}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+
+    </table>
+  )}
+
+</div>
 
       </div>
 
