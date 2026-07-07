@@ -1,33 +1,27 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+
 from app.schemas.first_aid import FirstAidRequest
+from app.services.first_aid_service import FirstAidService
 
 router = APIRouter()
+
+first_aid_service = FirstAidService()
 
 
 @router.post("/first-aid")
 def get_first_aid(data: FirstAidRequest):
-
-    description = data.description.lower()
-
-    advice = [
-        "Call emergency services immediately."
-    ]
-
-    if "unconscious" in description:
-        advice.append(
-            "Check breathing and place victim in recovery position."
+    try:
+        answer = first_aid_service.get_first_aid(
+            description=data.description,
+            language=data.language,
         )
 
-    if "bleeding" in description:
-        advice.append(
-            "Apply direct pressure to the wound."
-        )
+        return {
+            "answer": answer
+        }
 
-    if "fracture" in description:
-        advice.append(
-            "Immobilize the injured limb."
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
         )
-
-    return {
-        "advice": advice
-    }
