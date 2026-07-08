@@ -1,102 +1,144 @@
-"use client"
-import {useState} from "react"
+
+"use client";
+
+import { useState } from "react";
+
 export default function FirstAidPage() {
-
   const [description, setDescription] = useState("");
-const [advice, setAdvice] = useState<string[]>([]);
+  const [language, setLanguage] = useState("English");
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-const getFirstAidAdvice = async () => {
-  const response = await fetch(
-    "http://localhost:8000/first-aid",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        description: description,
-      }),
+  const getFirstAidAdvice = async () => {
+    if (!description.trim()) return;
+
+    setLoading(true);
+    setError("");
+    setAnswer("");
+
+    try {
+      const response = await fetch(
+        "http://localhost:8000/first-aid",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            description,
+            language,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || "Something went wrong.");
+      }
+
+      setAnswer(data.answer);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to get first-aid advice."
+      );
+    } finally {
+      setLoading(false);
     }
-  );
+  };
 
-  const data = await response.json();
-
-  console.log(data);
-
-  setAdvice(data.advice);
-};
   return (
     <main className="min-h-screen bg-gray-100 py-10 px-6 text-black">
-
       <div className="max-w-4xl mx-auto">
 
-        <h1 className="text-3xl font-bold mb-8 text-black">
+        <h1 className="text-3xl font-bold mb-8">
           AI First Aid Assistant
         </h1>
 
-        {/* Chat Container */}
         <div className="bg-white rounded-xl shadow-lg p-6">
 
-          {/* AI Message */}
           <div className="mb-6">
             <div className="bg-blue-100 p-4 rounded-lg max-w-xl">
-              <p className="text-black">
-                Hello! Describe the accident and I will
-                provide first aid guidance.
-              </p>
+              Hello! Describe the emergency and I will provide first-aid guidance.
             </div>
           </div>
 
-          {/* User Message */}
-          <div className="flex justify-end mb-6">
-            <div className="bg-green-100 p-4 rounded-lg max-w-xl">
-              <p className="text-black">
-                The victim has bleeding from the arm.
-              </p>
-            </div>
+          <div className="mb-6">
+            <label className="font-semibold">
+              Response Language
+            </label>
+
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="border rounded-lg p-3 w-full mt-2"
+            >
+              <option>English</option>
+              <option>Tamil</option>
+              <option>Hindi</option>
+            </select>
           </div>
 
-          {/* AI Response */}
-          {advice.length > 0 && (
-  <div className="mb-6">
-    <div className="bg-blue-100 p-4 rounded-lg max-w-xl">
+          <input
+            type="text"
+            placeholder="Describe the emergency..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !loading) {
+                getFirstAidAdvice();
+              }
+            }}
+            className="w-full border rounded-lg p-3"
+          />
 
-      <p className="font-semibold mb-2 text-black">
-        AI First Aid Advice:
-      </p>
+          <button
+            onClick={getFirstAidAdvice}
+            disabled={loading}
+            className="mt-4 bg-blue-900 text-white px-6 py-3 rounded-lg disabled:opacity-50"
+          >
+            {loading ? "Generating..." : "Send"}
+          </button>
 
-      <ul className="list-disc pl-5 space-y-2">
+          {error && (
+            <div className="mt-6 bg-red-100 p-4 rounded-lg text-red-700">
+              {error}
+            </div>
+          )}
 
-        {advice.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
+          {answer && (
+            <div className="mt-6 bg-blue-100 p-4 rounded-lg">
+              <h2 className="font-bold mb-2">
+                AI First Aid Advice
+              </h2>
 
-      </ul>
+              <p>{answer}</p>
+            </div>
+          )}
 
-    </div>
-  </div>
-)}
-
-          {/* Input Area */}
-          <div className="flex gap-4 mt-8 text-black">
-
-           <input
-  type="text"
-  placeholder="Describe the emergency..."
-  value={description}
-  onChange={(e) => setDescription(e.target.value)}
-  className="flex-1 border rounded-lg p-3"
-/>
-            <button
-  onClick={getFirstAidAdvice}
-  className="bg-blue-900 text-white px-6 py-3 rounded-lg"
-></button>
+          <div className="mt-8 text-sm text-gray-600 border-t pt-4">
+            <strong>Disclaimer:</strong> This AI provides first-aid guidance
+            only and does not replace professional medical care. Always contact
+            emergency medical services for serious injuries.
           </div>
 
         </div>
+        <button
+  onClick={() => {
+    setDescription("");
+    setAnswer("");
+    setError("");
+  }}
+  className="ml-4 bg-gray-300 px-4 py-3 rounded-lg"
+>
+  Clear
+</button>
 
       </div>
-
     </main>
   );
 }
+

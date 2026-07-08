@@ -20,8 +20,14 @@ def get_first_aid(data: FirstAidRequest):
             "answer": answer
         }
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=str(e)
-        )
+    except Exception:
+     fallback = first_aid_service.get_fallback_advice(
+        data.description
+    )
+
+    return {
+        "answer": fallback,
+        "source": "fallback"
+    
+    
+    }
